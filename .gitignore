@@ -3,7 +3,6 @@ logs
 *.log
 
 # Build
-dist
 .publish
 lib
 
