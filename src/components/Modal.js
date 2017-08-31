@@ -60,7 +60,6 @@ module.exports = React.createClass({
 		// Remember the element that was focused before we opened the modal
 		// so we can return focus to it once we close the modal.
 		this.focusedElementBeforeModalOpened = document.activeElement;
-
 		// We're using a transition to reveal the modal,
 		// so wait until the element is visible, before
 		// finding the first keyboard focusable element
@@ -84,13 +83,11 @@ module.exports = React.createClass({
 				},
 			});
 		}
-
 		// Make sure that no element outside of the modal
 		// can be interacted with while the modal is visible.
 		this.disabledHandle = ally.maintain.disabled({
 			filter: this.modalElement,
 		});
-
 		// Make sure that no element outside of the modal
 		// is exposed via the Accessibility Tree, to prevent
 		// screen readers from navigating to content it shouldn't
@@ -98,7 +95,6 @@ module.exports = React.createClass({
 		this.hiddenHandle = ally.maintain.hidden({
 			filter: this.modalElement,
 		});
-
 		// React to escape keys as mandated by ARIA Practices
 		this.keyHandle = ally.when.key({
 			escape: this.handleClose,
@@ -107,20 +103,17 @@ module.exports = React.createClass({
 	removeAccessibilityHandlers () {
 		// undo listening to keyboard
 		this.keyHandle && this.keyHandle.disengage();
-
 		// undo hiding elements outside of the modal
 		this.hiddenHandle && this.hiddenHandle.disengage();
-
 		// undo disabling elements outside of the modal
 		this.disabledHandle && this.disabledHandle.disengage();
-
 		// return focus to where it was before we opened the modal
 		this.focusedElementBeforeModalOpened && this.focusedElementBeforeModalOpened.focus();
 	},
+	*/
 	handleModalClick (event) {
 		if (event.target.dataset.modal) this.handleClose();
 	},
-	*/
 	handleClose () {
 		this.props.onCancel();
 	},
@@ -139,7 +132,7 @@ module.exports = React.createClass({
 	},
 	renderBackdrop() {
 		if (!this.props.isOpen) return;
-		return <div className="Modal-backdrop" onClick={this.props.backdropClosesModal ? this.handleClose : null} />;
+		return <div className="Modal-backdrop" />;
 	},
 	render() {
 		var className = classNames('Modal', {
@@ -148,7 +141,7 @@ module.exports = React.createClass({
 		var props = blacklist(this.props, 'backdropClosesModal', 'className', 'isOpen', 'onCancel');
 		return (
 			<div>
-				<TransitionPortal {...props} data-modal="true" className={className} /*onClick={this.handleModalClick}*/ transitionName="Modal-dialog" transitionEnterTimeout={260} transitionLeaveTimeout={140} component="div">
+				<TransitionPortal {...props} data-modal="true" className={className} onClick={this.props.backdropClosesModal ? this.handleModalClick : null} transitionName="Modal-dialog" transitionEnterTimeout={260} transitionLeaveTimeout={140} component="div">
 					{this.renderDialog()}
 				</TransitionPortal>
 				<TransitionPortal transitionName="Modal-background" transitionEnterTimeout={140} transitionLeaveTimeout={240} component="div">
